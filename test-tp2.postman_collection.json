@@ -1,0 +1,254 @@
+{
+	"info": {
+		"name": "test-tp2",
+		"_postman_id": "889023ae-307c-2c2d-a8b2-a5ca50f2929e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Response should be okay', function () {",
+							"    pm.response.to.have.status(200)",
+							"    pm.response.to.have.status('OK')",
+							"});",
+							"",
+							"pm.test('Response should contain id', function () {",
+							"    pm.response.to.have.jsonBody('id')",
+							"});",
+							"",
+							"var response = pm.response.json();",
+							"pm.environment.set('id', response.id)",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "firstname",
+							"value": "test",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "lastname",
+							"value": "TEST",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "birthday",
+							"value": "2015-01-10",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a646927f-18fc-426d-9ccc-715a56023b53",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Response should be okay', function () {",
+							"    pm.response.to.have.status(200)",
+							"    pm.response.to.have.status('OK')",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response should contain complete user \", function () {",
+							"   pm.response.to.have.jsonBody('id') && pm.response.to.have.jsonBody('firstname')&&pm.response.to.have.jsonBody('lastname')&&pm.response.to.have.jsonBody('birthday')",
+							" ",
+							"});",
+							"",
+							"pm.test(\"Response should contain id which equal id from the request\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"id\"));",
+							"});",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:3000/user/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"{{id}}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Put User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d2b35eff-3fdd-4332-9f00-8f7e0f3eb619",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Response should be okay', function () {",
+							"    pm.response.to.have.status(200)",
+							"    pm.response.to.have.status('OK')",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response should contain complete user \", function () {",
+							"   pm.response.to.have.jsonBody('id') && pm.response.to.have.jsonBody('firstname')&&pm.response.to.have.jsonBody('lastname')&&pm.response.to.have.jsonBody('birthday')",
+							" ",
+							"});",
+							"//Ne fonctionne pas",
+							"pm.test(\"Response should contain same updated fields as request body parameters \", function () {",
+							"var jsonData = pm.response.json();",
+							"pm.request.url.query.all().forEach((param)=>{ ",
+							"    var key = param.key;",
+							"    var value = param.value;",
+							"    pm.expect(value).to.eql(jsonData.key);",
+							"    });",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "firstname",
+							"value": "testUpdated",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "lastname",
+							"value": "TESTUpdated",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"{{id}}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e0fb2145-2337-47a3-9146-795376722f30",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Response should be okay', function () {",
+							"    pm.response.to.have.status(200)",
+							"    pm.response.to.have.status('OK')",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response should contain complete user \", function () {",
+							"   pm.response.to.have.jsonBody(['id']) && pm.response.to.have.jsonBody(['firstname'])&&pm.response.to.have.jsonBody(['lastname'])&&pm.response.to.have.jsonBody(['birthday'])",
+							" ",
+							"});",
+							"",
+							"pm.test(\"Response should contain id which equal id from the request\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0].id).to.eql(pm.environment.get(\"id\"));",
+							"});",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:3000/user/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"{{id}}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
